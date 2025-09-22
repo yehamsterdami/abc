@@ -1,0 +1,132 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.chat-container {
+  width: 95%;
+  max-width: 500px;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: background 0.5s ease;
+}
+
+/* 房间不同背景 */
+.chat-container.chill {
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 蓝色系，治愈 vibe */
+}
+
+.chat-container.party {
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee); /* 粉紫系，热闹 vibe */
+}
+
+.chat-container.study {
+  background: linear-gradient(135deg, #f9f7f3, #e5d4f0); /* 淡紫+白色，专注 vibe */
+}
+
+h1 {
+  color: #6a4c93;
+  margin: 5px 0;
+  font-size: 1.5em;
+}
+
+/* 房间按钮区域 */
+.room-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 5px 0;
+}
+
+.room-btn {
+  flex: 1;
+  margin: 0 3px;
+  padding: 5px 0;
+  border-radius: 6px;
+  border: none;
+  background-color: #a386cc;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.room-btn:hover {
+  background-color: #8a5fbf;
+}
+
+/* 聊天内容列表 */
+ul {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+  border-radius: 6px;
+  /* 改成半透明，让 container 背景显示 */
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: background 0.5s ease;
+}
+
+li {
+  padding: 5px 8px;
+  margin: 5px 0;
+  background-color: rgba(255, 255, 255, 0.7); /* 半透明消息气泡 */
+  border-radius: 6px;
+}
+
+li.self {
+  background-color: rgba(209, 196, 233, 0.7);
+}
+
+/* 消息输入区域 */
+.input-area {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.input-area input#name {
+  flex-basis: 25%;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.input-area input#msg {
+  flex-grow: 1;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.input-area button {
+  padding: 5px 10px;
+  background-color: #a386cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.input-area button:hover {
+  background-color: #8a5fbf;
+}

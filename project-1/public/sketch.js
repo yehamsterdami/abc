@@ -55,7 +55,7 @@ function draw() {
   let pitchShift = map(gamma, -90, 90, 0.8, 1.2);
   song.rate(playRate * pitchShift);
 
-  // ---- visuals ----
+  // visuals
   let amplitude = map(vol, 0, 1, 0, 15); 
 
   for (let i = 0; i < cols; i++) {
@@ -83,5 +83,5 @@ function draw() {
   textAlign(CENTER);
   text("Alpha (Z): " + nf(alpha,1,1) + "°  → playspeed: " + nf(playRate,1,2) + "x", width/2, height-60);
   text("Beta (X): " + nf(beta,1,1) + "°  → volume: " + nf(vol,1,2), width/2, height-40);
-  text("Gamma (Y): " + nf(gamma,1,1) + "°  → Pitch & color", width/2, height-20);
+  text("Gamma (Y): " + nf(gamma,1,1) + "°  → pitch", width/2, height-20);
 }

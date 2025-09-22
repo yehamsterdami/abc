@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💌 Music Chatroom</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div class="chat-container">
+  <h1>💌 Music Chatroom</h1>
+
+  <!-- 房间选择按钮 -->
+  <div class="room-buttons">
+    <button class="room-btn" data-room="chill">🌙 Chill</button>
+    <button class="room-btn" data-room="party">💃 Party</button>
+    <button class="room-btn" data-room="study">📚 Study</button>
+  </div>
+
+  <!-- 聊天内容 -->
+  <ul id="chatList"></ul>
+
+  <!-- 消息输入区域 -->
+  <div class="input-area">
+    <input id="name" placeholder="Your name">
+    <input id="msg" placeholder="Share a song or message">
+    <button id="sendBtn">Send</button>
+  </div>
+</div>
+
+  <script src="chat.js"></script>
+</body>
+</html>
+
+
+
+
