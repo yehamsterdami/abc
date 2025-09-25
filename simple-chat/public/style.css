@@ -8,7 +8,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100dvh;
 }
 
 @keyframes gradientBG {
@@ -30,7 +30,7 @@ body {
   transition: background 0.5s ease;
 }
 
-/* 房间不同背景 */
+
 .chat-container.chill {
   background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 蓝色系，治愈 vibe */
 }

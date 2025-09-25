@@ -1,3 +1,5 @@
+const socket = io();
+
 const chatContainer = document.querySelector(".chat-container");
 const chatList = document.getElementById("chatList");
 const nameInput = document.getElementById("name");
@@ -6,52 +8,67 @@ const sendBtn = document.getElementById("sendBtn");
 const roomButtons = document.querySelectorAll(".room-btn");
 
 let currentRoom = "chill"; // 默认房间
-let symbolMap = {
-  chill: "🎵",
-  party: "🎉",
-  study: "📖"
+const symbolMap = {
+  chill: "🎶",
+  party: "🎤💃",
+  study: "🎧📖"
 };
 
-let symbolMap1 = {
-  chill: "🎶",
-  party: "🎶💃🎤",
-  study: "🎧"
-}
+// --- 初始加入 chill ---
+socket.emit("joinRoom", currentRoom);
 
-// 切换房间
+// --- 切换房间 ---
 roomButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-    // 移除旧 class
     chatContainer.classList.remove("chill", "party", "study");
-    // 添加新 class
     currentRoom = btn.dataset.room;
     chatContainer.classList.add(currentRoom);
 
-    // 清空聊天记录（可选）
-    chatList.innerHTML = "";
+    chatList.innerHTML = ""; // 清空原有消息
+    socket.emit("joinRoom", currentRoom); // 通知后端切换房间
 
-    // 可选：提示用户进入哪个房间
-    appendMessage(`You joined ${currentRoom} room ${symbolMap[currentRoom]}`, true);
+    appendMessage(`You joined ${currentRoom} room 🎵`, true);
   });
 });
 
-// 发送消息
+// --- 发送消息 ---
 sendBtn.addEventListener("click", () => {
   const name = nameInput.value.trim() || "Anonymous";
   const msg = msgInput.value.trim();
   if (!msg) return;
 
-  appendMessage(`${name}: ${msg} ${symbolMap1[currentRoom]}`, true);
+  const data = {
+    name,
+    msg,
+    room: currentRoom
+  };
+
+  socket.emit("message", data); // 发给后端
   msgInput.value = "";
 });
 
-// 回车发送
+// --- 按回车发送 ---
 msgInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") sendBtn.click();
+  if (e.key === "Enter") {
+    sendBtn.click();
+  }
 });
 
-// 添加消息到列表
-function appendMessage(text, self=false) {
+// --- 收到消息（包括自己的）---
+socket.on("message", (data) => {
+  appendMessage(`${data.name}: ${data.msg} ${symbolMap[data.room]}`, data.name === nameInput.value);
+});
+
+// --- 如果后端发来历史消息 ---
+socket.on("history", (msgs) => {
+  chatList.innerHTML = "";
+  msgs.forEach(m => {
+    appendMessage(`${m.name}: ${m.msg} ${symbolMap[m.room]}`, m.name === nameInput.value);
+  });
+});
+
+// --- 把消息显示在页面 ---
+function appendMessage(text, self = false) {
   const li = document.createElement("li");
   li.textContent = text;
   if (self) li.classList.add("self");
@@ -59,8 +76,6 @@ function appendMessage(text, self=false) {
   chatList.scrollTop = chatList.scrollHeight;
 }
 
-// 初始化默认房间
-chatContainer.classList.add(currentRoom);
 
 
 

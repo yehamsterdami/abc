@@ -17,17 +17,17 @@ const io = new Server(httpsServer);
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
 
-  // 默认加入 chill 房间
+  // default: chill
   socket.join("chill");
 
-  // 加入房间
+  // join room
   socket.on("joinRoom", (room) => {
     socket.leaveAll();
     socket.join(room);
     console.log(`${socket.id} joined ${room}`);
   });
 
-  // 收到消息
+  // receive message from client
   socket.on("message", (data) => {
     console.log("msg from", data.name, ":", data.msg, "in", data.room);
     io.to(data.room).emit("message", data);
@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = 3001;
+const PORT = 4300;
 httpsServer.listen(PORT, () => {
   console.log(`HTTPS server running at https://localhost:${PORT}`);
 });
