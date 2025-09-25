@@ -4,7 +4,7 @@ const express = require("express");
 const { Server } = require("socket.io");
 
 const app = express();
-app.use(express.static("public"));
+app.use(express.static("public")); // 前端文件放在 public 文件夹
 
 const options = {
   key: fs.readFileSync("keys/localhost-key.pem"),
@@ -17,17 +17,17 @@ const io = new Server(httpsServer);
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
 
-  // default: chill
+  // 默认房间 chill
   socket.join("chill");
 
-  // join room
+  // 切换房间
   socket.on("joinRoom", (room) => {
     socket.leaveAll();
     socket.join(room);
     console.log(`${socket.id} joined ${room}`);
   });
 
-  // receive message from client
+  // 收到消息并广播
   socket.on("message", (data) => {
     console.log("msg from", data.name, ":", data.msg, "in", data.room);
     io.to(data.room).emit("message", data);
@@ -38,28 +38,10 @@ io.on("connection", (socket) => {
   });
 });
 
-const songButtons = document.querySelectorAll(".song-btn");
-
-// song button
-songButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const song = btn.dataset.song;
-    const data = {
-      name: "🎵 System",
-      msg: `Now playing: ${song}`,
-      room: currentRoom
-    };
-
-    socket.emit("message", data);
-  });
-});
-
-
 const PORT = 4300;
 httpsServer.listen(PORT, () => {
   console.log(`HTTPS server running at https://localhost:${PORT}`);
 });
-
 
 // const express = require('express');
 // const http = require("http");
