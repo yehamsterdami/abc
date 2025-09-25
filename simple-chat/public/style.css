@@ -85,6 +85,29 @@ ul {
   transition: background 0.5s ease;
 }
 
+.song-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 5px 0;
+}
+
+.song-btn {
+  flex: 1;
+  margin: 0 3px;
+  padding: 5px;
+  border-radius: 6px;
+  border: none;
+  background-color: #f48fb1;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.song-btn:hover {
+  background-color: #ec407a;
+}
+
+
 li {
   padding: 5px 8px;
   margin: 5px 0;

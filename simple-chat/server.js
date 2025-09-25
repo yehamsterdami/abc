@@ -38,6 +38,23 @@ io.on("connection", (socket) => {
   });
 });
 
+const songButtons = document.querySelectorAll(".song-btn");
+
+// song button
+songButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const song = btn.dataset.song;
+    const data = {
+      name: "🎵 System",
+      msg: `Now playing: ${song}`,
+      room: currentRoom
+    };
+
+    socket.emit("message", data);
+  });
+});
+
+
 const PORT = 4300;
 httpsServer.listen(PORT, () => {
   console.log(`HTTPS server running at https://localhost:${PORT}`);

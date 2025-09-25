@@ -14,8 +14,16 @@ const symbolMap = {
   study: "🎧📖"
 };
 
+// 🔹 本地存储每个房间的消息
+let roomMessages = {
+  chill: [],
+  party: [],
+  study: []
+};
+
 // --- 初始加入 chill ---
 socket.emit("joinRoom", currentRoom);
+appendMessage(`You joined ${currentRoom} room 🎵`, true);
 
 // --- 切换房间 ---
 roomButtons.forEach(btn => {
@@ -24,8 +32,10 @@ roomButtons.forEach(btn => {
     currentRoom = btn.dataset.room;
     chatContainer.classList.add(currentRoom);
 
-    chatList.innerHTML = ""; // 清空原有消息
     socket.emit("joinRoom", currentRoom); // 通知后端切换房间
+
+    // 重新渲染当前房间的消息
+    renderMessages(currentRoom);
 
     appendMessage(`You joined ${currentRoom} room 🎵`, true);
   });
@@ -54,20 +64,17 @@ msgInput.addEventListener("keydown", e => {
   }
 });
 
-// --- 收到消息（包括自己的）---
+// --- 收到消息 ---
 socket.on("message", (data) => {
-  appendMessage(`${data.name}: ${data.msg} ${symbolMap[data.room]}`, data.name === nameInput.value);
+  // 存到本地记录
+  roomMessages[data.room].push(data);
+  // 只有在当前房间才显示
+  if (data.room === currentRoom) {
+    appendMessage(`${data.name}: ${data.msg} ${symbolMap[data.room]}`, data.name === nameInput.value);
+  }
 });
 
-// --- 如果后端发来历史消息 ---
-socket.on("history", (msgs) => {
-  chatList.innerHTML = "";
-  msgs.forEach(m => {
-    appendMessage(`${m.name}: ${m.msg} ${symbolMap[m.room]}`, m.name === nameInput.value);
-  });
-});
-
-// --- 把消息显示在页面 ---
+// --- 显示一条消息 ---
 function appendMessage(text, self = false) {
   const li = document.createElement("li");
   li.textContent = text;
@@ -75,6 +82,96 @@ function appendMessage(text, self = false) {
   chatList.appendChild(li);
   chatList.scrollTop = chatList.scrollHeight;
 }
+
+// --- 渲染整个房间的历史消息 ---
+function renderMessages(room) {
+  chatList.innerHTML = "";
+  roomMessages[room].forEach(m => {
+    appendMessage(`${m.name}: ${m.msg} ${symbolMap[m.room]}`, m.name === nameInput.value);
+  });
+}
+
+
+
+
+
+// const socket = io();
+
+// const chatContainer = document.querySelector(".chat-container");
+// const chatList = document.getElementById("chatList");
+// const nameInput = document.getElementById("name");
+// const msgInput = document.getElementById("msg");
+// const sendBtn = document.getElementById("sendBtn");
+// const roomButtons = document.querySelectorAll(".room-btn");
+
+// let currentRoom = "chill"; // 默认房间
+// const symbolMap = {
+//   chill: "🎶",
+//   party: "🎤💃",
+//   study: "🎧📖"
+// };
+
+// // --- 初始加入 chill ---
+// socket.emit("joinRoom", currentRoom);
+
+// // --- 切换房间 ---
+// roomButtons.forEach(btn => {
+//   btn.addEventListener("click", () => {
+//     chatContainer.classList.remove("chill", "party", "study");
+//     currentRoom = btn.dataset.room;
+//     chatContainer.classList.add(currentRoom);
+
+//     chatList.innerHTML = ""; // 清空原有消息
+//     socket.emit("joinRoom", currentRoom); // 通知后端切换房间
+
+//     appendMessage(`You joined ${currentRoom} room 🎵`, true);
+//   });
+// });
+
+// // --- 发送消息 ---
+// sendBtn.addEventListener("click", () => {
+//   const name = nameInput.value.trim() || "Anonymous";
+//   const msg = msgInput.value.trim();
+//   if (!msg) return;
+
+//   const data = {
+//     name,
+//     msg,
+//     room: currentRoom
+//   };
+
+//   socket.emit("message", data); // 发给后端
+//   msgInput.value = "";
+// });
+
+// // --- 按回车发送 ---
+// msgInput.addEventListener("keydown", e => {
+//   if (e.key === "Enter") {
+//     sendBtn.click();
+//   }
+// });
+
+// // --- 收到消息（包括自己的）---
+// socket.on("message", (data) => {
+//   appendMessage(`${data.name}: ${data.msg} ${symbolMap[data.room]}`, data.name === nameInput.value);
+// });
+
+// // --- 如果后端发来历史消息 ---
+// socket.on("history", (msgs) => {
+//   chatList.innerHTML = "";
+//   msgs.forEach(m => {
+//     appendMessage(`${m.name}: ${m.msg} ${symbolMap[m.room]}`, m.name === nameInput.value);
+//   });
+// });
+
+// // --- 把消息显示在页面 ---
+// function appendMessage(text, self = false) {
+//   const li = document.createElement("li");
+//   li.textContent = text;
+//   if (self) li.classList.add("self");
+//   chatList.appendChild(li);
+//   chatList.scrollTop = chatList.scrollHeight;
+// }
 
 
 
