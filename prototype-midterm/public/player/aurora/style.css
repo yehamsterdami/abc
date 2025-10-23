@@ -1,0 +1,13 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at center, #0a0f20, #01010a);
+  color: white;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+#p5-canvas-container {
+  width: 100%;
+  height: 100vh;
+}

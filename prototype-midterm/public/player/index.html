@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Echo Field</title>
+
+  <!-- p5.js & Tone.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <!-- 字体 & 样式 -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      color: #e0e6ff;
+      background: radial-gradient(ellipse at bottom, #0a0f2c 0%, #000000 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #canvas-container {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+    }
+
+    .container {
+      text-align: center;
+      animation: fadeIn 2s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      letter-spacing: 2px;
+      color: #a8c8ff;
+      text-shadow: 0 0 15px rgba(150, 200, 255, 0.6);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    button {
+      background: rgba(50, 80, 180, 0.15);
+      border: 1px solid rgba(180, 200, 255, 0.3);
+      color: #dbe4ff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      padding: 0.8rem 1.6rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    button:hover {
+      background: rgba(120, 160, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(160, 200, 255, 0.4);
+    }
+
+    @media (max-width: 600px) {
+      .title { font-size: 2.4rem; }
+      button { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="canvas-container"></div>
+
+  <div class="container">
+    <h1 class="title">Echo Field</h1>
+    <p class="subtitle">An Interactive Sound & Light Experience</p>
+
+    <div class="buttons">
+      <button onclick="enter('aurora')">Aurora Pad</button>
+      <button onclick="enter('sweep')">Negril Sweep</button>
+      <button onclick="enter('strings')">Slow Strings</button>
+      <button onclick="enter('glow')">Soft Glow</button>
+      <button onclick="enter('chrome')">Chrome Falls</button>
+    </div>
+  </div>
+
+  <script>
+    function enter(role) {
+      window.location.href = `${role}/index.html`;
+    }
+
+    const socket = io();
+    socket.emit("playerJoin");
+
+    let particles = [];
+
+    function setup() {
+      let canvas = createCanvas(windowWidth, windowHeight);
+      canvas.parent("canvas-container");
+
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: random(width),
+          y: random(height),
+          size: random(1, 3),
+          alpha: random(50, 150),
+          speedX: random(-0.3, 0.3),
+          speedY: random(-0.3, 0.3),
+          glow: random(80, 200)
+        });
+      }
+
+      noStroke();
+    }
+
+    function draw() {
+      background(10, 10, 25, 40);
+
+      for (let p of particles) {
+        fill(180, 200, 255, p.alpha);
+        drawingContext.shadowBlur = p.glow;
+        drawingContext.shadowColor = "rgba(150, 180, 255, 0.6)";
+        circle(p.x, p.y, p.size);
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0 || p.x > width) p.speedX *= -1;
+        if (p.y < 0 || p.y > height) p.speedY *= -1;
+      }
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+    }
+  </script>
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Echo Field</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.min.js"></script>
+</head>
+<body>
+  <div id="canvas-container"></div>
+
+  <div class="container">
+    <h1 class="title">Echo Field</h1>
+    <p class="subtitle">An Interactive Sound & Light Experience</p>
+
+   <div class="buttons">
+      <button onclick="enter('aurora')">Aurora Pad</button>
+      <button onclick="enter('sweep')">Negril Sweep</button>
+      <button onclick="enter('strings')">Slow Strings</button>
+      <button onclick="enter('glow')">Soft Glow</button>
+      <button onclick="enter('chrome')">Chrome Falls</button>
+    </div>
+
+
+  <script>
+
+    function enter(role) {
+     window.location.href = `${role}/index.html`;
+    }
+    
+    const socket = io();
+    socket.emit("playerJoin");
+
+    let particles = [];
+
+    function setup() {
+      let canvas = createCanvas(windowWidth, windowHeight);
+      canvas.parent("canvas-container");
+      for (let i = 0; i < 100; i++) {
+        particles.push({
+          x: random(width),
+          y: random(height),
+          size: random(1, 4),
+          alpha: random(30, 100),
+          speedX: random(-0.2, 0.2),
+          speedY: random(-0.2, 0.2),
+        });
+      }
+      noStroke();
+    }
+
+    function draw() {
+      background(10, 10, 10, 30);
+      fill(180, 200, 255, 80);
+      for (let p of particles) {
+        circle(p.x, p.y, p.size);
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0 || p.x > width) p.speedX *= -1;
+        if (p.y < 0 || p.y > height) p.speedY *= -1;
+      }
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+    }
+  </script>
+</body>
+</html> -->

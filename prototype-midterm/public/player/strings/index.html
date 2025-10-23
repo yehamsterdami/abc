@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Touch Strings</title>
+
+
+  <script src="/lib/p5.js"></script>
+  <script src="/lib/p5.sound.js"></script>
+
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+      color: white;
+      font-family: monospace;
+    }
+    #info {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="info">Touches: <span id="count">0</span></div>
+  <script src="script.js"></script>
+</body>
+</html>
