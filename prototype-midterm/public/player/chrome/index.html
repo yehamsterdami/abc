@@ -5,125 +5,20 @@
   <title>Play</title>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
 
-   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      color: #dbe4ff;
-      background: radial-gradient(ellipse at bottom, #0a0c14 0%, #000000 100%);
-      overflow: hidden;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #canvas-container {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-    }
-
-    .container {
-      text-align: center;
-      animation: fadeIn 2s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3rem;
-      letter-spacing: 1.5px;
-      color: #b0d4ff;
-      text-shadow: 0 0 15px rgba(150, 200, 255, 0.6);
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      opacity: 0.7;
-      font-size: 1.1rem;
-      margin-bottom: 2rem;
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    button {
-      background: rgba(120, 160, 255, 0.15);
-      border: 1px solid rgba(180, 200, 255, 0.3);
-      color: #e6ebff;
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      padding: 0.7rem 1.4rem;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(8px);
-    }
-
-    button:hover {
-      background: rgba(160, 200, 255, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 0 20px rgba(180, 200, 255, 0.4);
-    }
-
-    #motionDebug {
-      position: fixed;
-      bottom: 15px;
-      left: 15px;
-      font-size: 0.9rem;
-      opacity: 0.6;
-      text-align: left;
-      line-height: 1.4;
-    }
-
-    #square {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.3rem;
-      letter-spacing: 1px;
-      color: #9ebeff;
-      text-shadow: 0 0 10px rgba(150, 180, 255, 0.5);
-      margin-top: 1.5rem;
-      animation: glowPulse 2s infinite ease-in-out alternate;
-    }
-
-    @keyframes glowPulse {
-      from { text-shadow: 0 0 5px rgba(100, 160, 255, 0.3); opacity: 0.8; }
-      to { text-shadow: 0 0 20px rgba(180, 220, 255, 0.9); opacity: 1; }
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 2.4rem; }
-      button { font-size: 0.9rem; padding: 0.6rem 1.1rem; }
-    }
-  </style>
+   
 </head>
 <body>
 
   <div id="canvas-container"></div>
 
   <div class="container">
-    <h1>Chrome Falls</h1>
-    <p>Move your device — Feel the sound of motion.</p>
+   
 
     <div class="buttons">
 
       <button onclick="requestMotion()">Motion Permission</button>
-      <button onclick="requestOrientation()">Orientation Permission</button>
     </div>
 
   </div>
@@ -134,7 +29,6 @@
     <p id="accelerationZ"></p>
     <p id="totalAcc"></p>
   <script src="requestMotion.js"></script> 
-  <script src="requestOrientation.js"></script> 
   <script src="script.js"></script>
 </body>
 </html>

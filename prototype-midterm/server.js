@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const path = require('path');
 
@@ -78,18 +76,24 @@ io.on("connection", (socket) => {
   socket.on("motionSound", (data) => {
     console.log("Motion Trigger from", socket.id);
     console.log("→ File:", data.file, "| Acceleration:", data.acc.toFixed(2));
+      io.emit("viewerFlash", data);
+
   });
+
+  socket.on("viewerFlash", (data) => {
+  console.log("✨ Received flash signal:", data);
+  triggerFlash(data.acc);
+});
   
-socket.on("touchMove", (data) => {
-    console.log(`🎵 touchMove from ${socket.id}:`, data);
-    io.emit("viewerPlay", data); // 转发给 viewer
-  });
+// socket.on("touchMove", (data) => {
+//     console.log("📩 touchMove from player:", data);
+//     io.emit("viewerEffect", data); // 广播给 viewer
+//   });
 
-  socket.on("touchEnd", (data) => {
-    console.log(`🖐️ touchEnd from ${socket.id}:`, data);
-    io.emit("viewerStop", data);
-  });
-
+//   socket.on("touchEnd", (data) => {
+//     console.log("📩 touchEnd:", data);
+//     io.emit("viewerClear", data);
+//   });
 
   socket.on("disconnect", () => {
     console.log("Device disconnected:", socket.id);
