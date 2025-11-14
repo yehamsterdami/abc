@@ -4,12 +4,11 @@ let totalTouches = 0;
 const socket = io();  
 
 function preload() {
-  // ✅ load your own sounds
-  sounds.push(loadSound("sounds/note1.wav"));
-  sounds.push(loadSound("sounds/note2.wav"));
-  sounds.push(loadSound("sounds/note3.wav"));
-  sounds.push(loadSound("sounds/note4.wav"));
-  sounds.push(loadSound("sounds/note5.wav"));
+  sounds.push(loadSound("/sounds/string1.wav"));
+  sounds.push(loadSound("/sounds/string2.wav"));
+  sounds.push(loadSound("/sounds/string3.wav"));
+  sounds.push(loadSound("/sounds/string4.wav"));
+  sounds.push(loadSound("/sounds/string5.wav"));
 }
 
 function setup() {
@@ -18,7 +17,6 @@ function setup() {
   background(20);
 
 
-  // 防止浏览器阻止声音
   userStartAudio();
 }
 
@@ -38,7 +36,6 @@ function touchStarted() {
   console.log("Touches:", totalTouches);
   socket.emit("touchEvent", { touches: totalTouches });
 
-  // 播放对应数量的音
   for (let i = 0; i < totalTouches && i < sounds.length; i++) {
     if (!sounds[i].isPlaying()) {
       sounds[i].play();
@@ -51,9 +48,14 @@ function touchEnded() {
   document.querySelector("#count").innerText = totalTouches;
   socket.emit("touchEvent", { touches: totalTouches });
 
-  // 如果所有手指都离开 -> 停止所有声音
+  // 若完全放开手指，淡出所有声音
   if (totalTouches === 0) {
-    sounds.forEach(s => s.stop());
+    sounds.forEach(s => {
+      if (s.isPlaying()) {
+        s.amp(0, 1.5); // 在 1.5 秒内淡出音量到 0
+        setTimeout(() => s.stop(), 1600); // 淡出结束后停止播放
+      }
+    });
   }
 }
 

@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Viewer</title>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/lib/p5.js"></script>
-<script src="/lib/p5.sound.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Touch Strings</title>
+
+  <script src="/lib/p5.js"></script>
+  <script src="/lib/p5.sound.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+      color: white;
+      font-family: monospace;
+    }
+    #info {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 16px;
+    }
+  </style>
 </head>
+
 <body>
-<div id="p5-canvas-container"></div>
-<script src="script.js"></script>
+  <div id="info">Touches: <span id="count">0</span></div>
+  <script src="script.js"></script>
 </body>
 </html>

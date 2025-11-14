@@ -15,7 +15,6 @@ function setup() {
 
   socket = io.connect(window.location.origin, { secure: true });
 
-  // 音效链：低通滤波器
   filter = new p5.LowPass();
   sound.disconnect();
   sound.connect(filter);
@@ -26,11 +25,9 @@ function setup() {
 }
 
 function draw() {
-  // 背景带渐变和微微流动的蓝光
   setGradient(0, 0, width, height, color(10, 15, 25), color(20, 40, 80), 1);
   drawAurora();
 
-  // 绘制粒子效果
   for (let i = particles.length - 1; i >= 0; i--) {
     let p = particles[i];
     fill(p.col);
@@ -42,7 +39,6 @@ function draw() {
     if (p.alpha <= 0) particles.splice(i, 1);
   }
 
-  // 绘制手指触摸点
   for (let id in activeTouches) {
     const t = activeTouches[id];
     let pulse = sin(frameCount * 0.2) * 20 + 60;

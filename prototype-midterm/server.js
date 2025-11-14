@@ -53,10 +53,10 @@ io.on("connection", (socket) => {
   console.log("📱 A device connected:", socket.id);
 
 
-  socket.on("orientation90", (data) => {
-    console.log("Orientation Trigger from", socket.id);
-    console.log("→ α:", data.alpha.toFixed(1), "β:", data.beta.toFixed(1), "γ:", data.gamma.toFixed(1));
-  });
+  // socket.on("orientation90", (data) => {
+  //   console.log("Orientation Trigger from", socket.id);
+  //   console.log("→ α:", data.alpha.toFixed(1), "β:", data.beta.toFixed(1), "γ:", data.gamma.toFixed(1));
+  // });
   
   socket.on("playerJoin", () => {
     console.log("Player joined:", socket.id);
@@ -67,11 +67,12 @@ io.on("connection", (socket) => {
     }
   });
 
- socket.on("acceleration", (data) => {
-  if (!data) return;
-  const acc = data.magnitude || data.totalAcc || 0;
-  console.log(`acceleration from ${socket.id}: ${acc.toFixed(2)}`);
-});
+//  socket.on("acceleration", (data) => {
+//   if (!data) return;
+//   const acc = data.magnitude || data.totalAcc || 0;
+//   console.log(`acceleration from ${socket.id}: ${acc.toFixed(2)}`);
+// });
+
 
   socket.on("motionSound", (data) => {
     console.log("Motion Trigger from", socket.id);
@@ -80,20 +81,16 @@ io.on("connection", (socket) => {
 
   });
 
+    socket.on("touchEvent", (data) => {
+    console.log("🎵 Received touchEvent:", data);
+    io.emit("viewerEffect", data); 
+  });
+
   socket.on("viewerFlash", (data) => {
   console.log("✨ Received flash signal:", data);
   triggerFlash(data.acc);
 });
   
-// socket.on("touchMove", (data) => {
-//     console.log("📩 touchMove from player:", data);
-//     io.emit("viewerEffect", data); // 广播给 viewer
-//   });
-
-//   socket.on("touchEnd", (data) => {
-//     console.log("📩 touchEnd:", data);
-//     io.emit("viewerClear", data);
-//   });
 
   socket.on("disconnect", () => {
     console.log("Device disconnected:", socket.id);
