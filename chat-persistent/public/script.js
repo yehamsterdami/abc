@@ -48,6 +48,9 @@ nameInput.addEventListener("change", function(){
     // locally
     localStorage.setItem("chat-username", nameInput.value);
     // tell server about it
+    socket.emit("name-change", {
+        newUsername: nameInput.value
+    });
 })
 
 
@@ -96,7 +99,11 @@ socket.on("message-from-server", function(data){
 
 socket.on("chat-history", function(data){
     // deal with chat history
-    
+    console.log(data);
+    for (let i = 0; i < data.length; i++){  
+        let messageData = data[i];  
+        appendMessage(messageData);    
+}
 })
 
 // APPEND MESSAGES TO BOX
@@ -109,18 +116,23 @@ function appendMessage(data){
     // create new list item (li)
     let newListItem = document.createElement("li");
     // class name if message is out own message
+    if (data.sender.userId == myUserId){
+        newListItem.className = "fromMe";
+    } else{
+        newListItem.className = "fromOthers";
+    }
 
     //sender
     let who = document.createElement("span");
     who.className = "who";
-    // who.innerText = 
+    who.innerText = data.sender.username;
 
     newListItem.append(who);
 
     //messsage
     let words = document.createElement("span");
     words.className = "words";
-    // words.innerText = 
+    words.innerText = data.message; 
 
     newListItem.append(words);
 

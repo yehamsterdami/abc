@@ -31,6 +31,16 @@ let sockets = {};
 let users = {};  
 
 let messages = []
+let DATA_PATH = "chat-data.json";
+// on server start, read existing messages from file
+try {
+    let existingData = fs.readFileSync(DATA_PATH);
+    messages = JSON.parse(existingData);
+    console.log("loaded existing chat data", messages);
+} catch (err) { 
+    console.log("no existing chat data");   
+
+}
 
 io.on('connection', (socket) => {
 
@@ -55,6 +65,7 @@ io.on('connection', (socket) => {
 
     socket.on("name-change", function(data){
         // handle change of username
+        sockets[socket.id].username = data.newUsername;
     })
 
     socket.on("message-from-client", function(data){
@@ -65,6 +76,12 @@ io.on('connection', (socket) => {
         }
         // message object shoylt contain message, username and userID
         messages.push(message)
+
+        //save the new messages array to the local JSON file
+        let stringifiedMessages = JSON.stringify(messages, null, 2);  
+        fs.writeFileSync(DATA_PATH, stringifiedMessages, 'utf-8');
+
+        //send to all clients
         io.emit("message-from-server", message);
     })
 
