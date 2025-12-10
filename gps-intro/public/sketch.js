@@ -14,10 +14,12 @@ let socket = io();
 let mappa_options = {
   lat: 0, // will change once we have data
   lng: 0, // will change once we have data
-  zoom: 16, // initial zoom level
+  zoom: 3, // initial zoom level
   // style: "https://b.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png"
   // style: "https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}",
-  style: 'https://webst01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=6&x={x}&y={y}&z={z}',
+  // style: 'https://webst01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=6&x={x}&y={y}&z={z}',
+  style: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+
 }
 
 function setup() {
@@ -30,23 +32,28 @@ function setup() {
 function draw() {
   clear();
 
-  // Initialize full screen map
-  //runs only once to init the map
-  if(!mapInit && GPS_GRANTED && currentLongitude!= 0){
+ if (!mapInit) {
     console.log("starting map");
-    mappa_options.lat = 32.016879; //currentLatitude
-    mappa_options.lng = 120.905338; //
-    myMap = mappa.tileMap(mappa_options); 
+
+    // random
+    let randomLat = (Math.random() * 180) - 90;
+    let randomLng = (Math.random() * 360) - 180;
+
+    mappa_options.lat = randomLat;
+    mappa_options.lng = randomLng;
+
+    myMap = mappa.tileMap(mappa_options);
     myMap.overlay(canvas);
     myMap.onChange(updateMapContent);
-    mapInit = true
-  }
+    mapInit = true;
+}
+
 
   if(mapInit){
     // only update and draw our point if we actually have data
     me.update();
     me.display();
-    // console.log(me)
+    console.log(me)
 
   }
   
@@ -82,14 +89,14 @@ function handleNewPosition(pos){
   currentLatitude = lonlat[1];
   console.log(currentLatitude, currentLongitude);
 
-  let locForServer = {
-    lat: currentLatitude,
-    lon: currentLongitude
-  }
-  socket.emit("locationFromClient", {lat:currentLatitude, lon:currentLongitude});
+  // let locForServer = {
+  //   lat: currentLatitude,
+  //   lon: currentLongitude
+  // }
+  // socket.emit("locationFromClient", {lat:currentLatitude, lon:currentLongitude});
 
   if(mapInit){
-    // if map already displayed, update the point
+    // if map already   displayed, update the point
     updateMapContent();
   }
   

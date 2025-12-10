@@ -41,7 +41,7 @@ app.post('/upload', upload.single('photo'), (req, res) => {
     console.log(`File uploaded successfully: ${req.file.filename}`);
     
     // In a real application, you would save this filename/path to a database
-    // For this prototype, we just return the success.
+    //return the success.
     res.json({
         message: 'Image uploaded and saved!',
         filename: req.file.filename,
@@ -55,7 +55,6 @@ app.use('/uploads', express.static(UPLOAD_DIR));
 
 // --- HTTPS Server Setup ---
 
-// Creating object of key and certificate for SSL
 const options = {
     key: fs.readFileSync("keys-for-local-https/localhost-key.pem"),
     cert: fs.readFileSync("keys-for-local-https/localhost.pem"),
@@ -63,14 +62,13 @@ const options = {
 
 let HTTPSserver = https.createServer(options, app);
 
-// --- Socket.IO Setup (Kept for future features) ---
 const { Server } = require('socket.io');
 const io = new Server(HTTPSserver);
 
 let sockets = {};      // socket.id -> { userId, username }
 let users = {};        // userId -> socket.id
 
-// This is your chat/message handling logic, preserved here:
+// chat/message handling logic, preserved here:
 let messages = [];
 let DATA_PATH = "chat-data.json";
 try {
@@ -117,7 +115,6 @@ io.on('connection', (socket) => {
     });
 });
 
-// --- Start the Server ---
 HTTPSserver.listen(portHTTPS, function () {
     console.log("HTTPS Server started at port", portHTTPS);
     console.log(`Access the prototype at https://localhost:${portHTTPS}`);

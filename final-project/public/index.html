@@ -8,7 +8,7 @@
   
   <link rel="manifest" href="manifest.json" />
 
-  <title>CCLab Project</title>
+  <title>GPS Project</title>
 
   <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -22,35 +22,15 @@
 </head>
 
 <body>
+  <button id="requestOrientationButton" onclick="requestGPS()" style="position:fixed;top:20px;left:20px;">request GPS</button>
 
   <div class="main-wrapper">
     <!-- <h1>Project Title</h1> -->
-
-  <div id="entry-screen">
-    <div id="entry-box">
-      <h2>Enter your name</h2>
-      <input id="name-input" type="text" placeholder="Your name" />
-      <button id="enter-btn" >Enter Map</button>
-    </div>
-  </div>
-
-  <div id="mailbox-container">
-    <img id="mailbox-button" src="mailbox.png" alt="mailbox">
-    
-    <div id="mailbox-popup">
-        <div id="mailbox-header">Mailbox</div>
-        <div id="mailbox-messages"></div>
-    </div>
-</div>
-
-
 
     <!-- the following div will contain the p5 canvas. -->
     <div id="p5-canvas-container">
       <!-- p5 canvas will be appended here. -->
     </div>
-   
-
 
     <!-- <p>Project Description</p> -->
   </div>

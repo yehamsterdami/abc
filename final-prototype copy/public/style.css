@@ -10,7 +10,7 @@ body {
     color: white;
 }
 
-/* Style for the p5 canvas, ensuring it fills the screen as much as possible */
+/* Style for the p5 canvas
 canvas {
     display: block;
     max-width: 100vw;
