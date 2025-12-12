@@ -1,3 +1,5 @@
+const prefix = location.pathname.replace(/\/$/, '');      
+const socket = io({ path: prefix + '/socket.io' });
 
 let mappa = new Mappa('Leaflet'); // map library
 let myMap;
@@ -18,7 +20,6 @@ let dpad = {
   size: 60,
 };
 
-let socket;
 let otherPlayers = {};
 let me;
 let playerName = "";
