@@ -1,4 +1,39 @@
 
+
+const express = require('express');
+const https = require("https");
+const fs = require("fs");
+const app = express();
+const portHTTPS = 3010;
+
+app.use(express.static('public'));
+
+const options = {
+    key: fs.readFileSync("localhost-key.pem"),
+    cert: fs.readFileSync("localhost.pem"),
+};
+
+const HTTPSserver = https.createServer(options, app);
+const { Server } = require('socket.io');
+const io = new Server(HTTPSserver);
+
+// --- Data Structures ---
+let sockets = {};        // socket.id -> { userId, name }
+let users = {};          // userId -> socket.id
+let players = {};        // userId -> { lat, lng, name }
+let meetingPoints = [];  // { lat, lng, messages: [ { from, text } ] }
+
+// Optional: persist meeting points
+const DATA_PATH = "meeting-points.json";
+try {
+    const existingData = fs.readFileSync(DATA_PATH);
+    meetingPoints = JSON.parse(existingData);
+    console.log("Loaded meeting points:", meetingPoints);
+} catch (err) {
+    console.log("No existing meeting points found.");
+}
+
+
 io.on('connection', (socket) => {
     console.log('User connected', socket.id);
 
