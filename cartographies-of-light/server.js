@@ -4,7 +4,7 @@ const express = require('express');
 const https = require("https");
 const fs = require("fs");
 const app = express();
-const portHTTPS = 3010;
+const portHTTPS = 3000;
 
 app.use(express.static('public'));
 
