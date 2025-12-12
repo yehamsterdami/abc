@@ -128,7 +128,7 @@ mailboxButton.addEventListener("click", () => {
   }
 
   function initSocketConnection() {
-    socket = io();
+    // socket = io();
     socket.emit("identify", { userId, name: playerName });
 
     socket.on("loadPlayerData", (data) => {
