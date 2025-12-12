@@ -1,3 +1,6 @@
+const prefix = location.pathname.replace(/\/$/, '');      
+const socket = io({ path: prefix + '/socket.io' });
+
 let mappa = new Mappa('Leaflet'); // map library
 let myMap;
 let canvas;
@@ -6,7 +9,6 @@ let currentLatitude = 0; // global variables will be updated as we get GPS data
 let mapInit = false; // we only do map stuff once mapInit is true (see in draw)
 let me; // point object showing our own location
 
-let socket = io();
 
 // options for map
 // we only actually initialize the map once we get data where we are (in draw)
